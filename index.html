@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,8 +18,36 @@
     header {
       background-color: #116890;
       padding: 15px;
-      text-align: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center; /* Center elements vertically */
+    }
+
+    header h1 {
       color: white;
+      font-size: 20px;
+      margin: 0; /* Remove bottom margin for better alignment */
+    }
+
+    nav {
+      display: flex;
+      list-style: none; /* Remove default list styling */
+      padding: 0;
+      margin: 0;
+    }
+
+    nav a {
+      display: block;
+      padding: 10px 15px;
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      /* Adjust spacing between list items as needed */
+      margin-right: 20px;
+    }
+
+    nav a.active {
+      background-color: #439a9a;
     }
 
     .container {
@@ -32,7 +61,7 @@
 
     h1 {
       text-align: center;
-      font-size:10px;
+      font-size: 20px;
     }
 
     label {
@@ -58,8 +87,30 @@
       word-wrap: break-word;
     }
 
+    .data-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex; /* Make the list horizontal */
+      /* Flexbox properties for spacing and centering items */
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .data-list li {
+      margin-bottom: 10px;
+    }
+
+    .data-list li:last-child {
+      margin-bottom: 0;
+    }
+
     /* Media Queries for responsiveness */
     @media only screen and (max-width: 600px) {
+      nav a {
+        font-size: 16px;
+        margin-right: 10px; /* Adjust spacing for smaller screens */
+      }
       .container {
         padding: 10px;
       }
@@ -68,18 +119,23 @@
 </head>
 
 <body>
-  <header>
-    <h1>Full Form Finders</h1>
-  </header>
+    <header>
+        <h1>All In <span style="color: rgb(157, 255, 0);">one</span></h1>
+        <nav>
+          <a href="#">Home</a>
+          <a href="#">About</a>
+          <a href="#">Contact</a>
+        </nav>
+      </header>
 
   <div class="container">
     <nav>
 
     </nav>
 
-    <h1>Find Full Forms of Words:</h1>
-    <label for="courseInput">Enter Words:</label>
-    <input type="text" id="courseInput" name="course" required oninput="getData()">
+    <h1>Find Your Word`s Full form:</h1>
+    <label for="courseInput"></label>
+    <input type="text" id="courseInput" placeholder="Type Your Words..." name="course" required oninput="getData()">
     <pre id="apiData"></pre>
   </div>
 
@@ -111,7 +167,7 @@
       } catch (error) {
         console.error('Error fetching API data:', error);
         $('#apiData').text('Error fetching API data');
-      }
+      } 
     }
 
     function getValueForKey(apiData, inputWords) {
@@ -121,7 +177,38 @@
       return {result};
     }
 
+    // ================================================  
+    const dataForm = document.getElementById('dataForm');
+const inputData = document.getElementById('inputData');
+
+dataForm.addEventListener('submit', (event) => {
+    event.preventDefault(); 
+
+    const data = inputData.value.trim(); 
+
+    if (!data) {
+        alert('Please enter some data.');
+        return;
+    }
+    let storedData = localStorage.getItem('storedData');
+
+    let dataArray = [];
+    if (storedData && Array.isArray(JSON.parse(storedData))) {
+        dataArray = JSON.parse(storedData);
+    }
+
+    dataArray.push(data);
+    try {
+        localStorage.setItem('storedData', JSON.stringify(dataArray));
+        alert('Data stored successfully!');
+        inputData.value = '';
+    } catch (error) {
+        alert('Error storing data: ' + error.message);
+    }
+});
+
   </script>
 </body>
 
 </html>
+
